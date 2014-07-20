@@ -1,0 +1,15 @@
+# Load data (assume it is in current dir)
+nei = readRDS("summarySCC_PM25.rds")
+scc = readRDS("Source_Classification_Code.rds")
+
+# Filter records for Baltimore City only
+baltimore = nei[nei$fips == "24510", ]
+# Sum emissions by the year
+totals = aggregate(Emissions ~ year, data = baltimore, FUN = sum)
+
+# Draw plot
+png(file="plot2.png")
+plot(totals, type="o", 
+     main=expression("Total " * PM[2.5] * " Emmissions in Baltimore by Year"), 
+     xlab="Year", ylab="Emmission (tons)")
+dev.off()
